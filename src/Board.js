@@ -35,11 +35,10 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     
     
     let initialBoard = [];
-    // TODO: create array-of-arrays of true/false values
     for (let y=0; y < ncols; y++) {
       initialBoard.push([]);
       for (let x=0; x < nrows; x++) {
-        const multiplier = Math.random() < chanceLightStartsOn ? "." : "O"
+        const multiplier = Math.random() < chanceLightStartsOn ? false : true
         initialBoard[y].push(multiplier);
       }
     }
@@ -47,8 +46,10 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     return initialBoard;
   }
 
+  /** do we want a boolean value? */
   function hasWon() {
     // TODO: check the board in state to determine whether the player has won.
+    return board.every(c => c === false)
   }
 
   function flipCellsAround(coord) {
@@ -64,10 +65,16 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
       };
 
       // TODO: Make a (deep) copy of the oldBoard
-
+      let boardCopy = oldBoard.map(r => [...r]);
       // TODO: in the copy, flip this cell and the cells around it
+      flipCell(y, x, boardCopy);
+      flipCell(y, x-1, boardCopy);
+      flipCell(y, x+1, boardCopy);
+      flipCell(y-1, x, boardCopy);
+      flipCell(y+1, x, boardCopy);
 
       // TODO: return the copy
+      return boardCopy;
     });
   }
 
